@@ -1,0 +1,32 @@
+{% extends 'patroni/layout.html' %}
+
+{% block title %}
+{{ endpoint }}
+{% endblock %}
+
+{% block content %}
+<!--<pre>{{ data }}</pre>-->
+
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">TL</th>
+        <th scope="col">LSN</th>
+        <th scope="col">Reason</th>
+        <th scope="col">Timestamp</th>
+        <th scope="col">New Leader</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for r in data reversed %}
+    <tr>
+        <td>{{ r.tl }}</td>
+        <td>{{ r.lsn }}</td>
+        <td>{{ r.reason }}</td>
+        <td>{{ r.timestamp }}</td>
+        <td>{{ r.new_leader }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

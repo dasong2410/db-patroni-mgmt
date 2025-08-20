@@ -1,0 +1,52 @@
+{% extends 'patroni/layout.html' %}
+
+{% block title %}
+    {{ endpoint }}
+{% endblock %}
+
+{% block content %}
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Cluster</th>
+            <th scope="col">Name</th>
+            <th scope="col">Role</th>
+            <th scope="col">State</th>
+            <th scope="col">API_URL</th>
+            <th scope="col">Host</th>
+            <th scope="col">Port</th>
+            <th scope="col">Timeline</th>
+            <th scope="col">Tags</th>
+            <th scope="col">Operation</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for r in data %}
+            <tr>
+                <td>{{ r.scope }}</td>
+                <td>{{ r.name }}</td>
+                <td>{{ r.role }}</td>
+                <td>{{ r.state }}</td>
+                <td>{{ r.api_url }}</td>
+                <td>{{ r.host }}</td>
+                <td>{{ r.port }}</td>
+                <td>{{ r.timeline }}</td>
+                <td>{{ r.tags }}</td>
+                <td>
+                    {#                    <a class="btn btn-success btn-sm"#}
+                    {#                       href="/patroni/cluster?op=switchover&leader={{ leader }}&candidate={{ r.name }}" role="button"#}
+                    {#                        aria-disabled="true">Switchover</a>#}
+                    <button type="button" class="btn btn-success btn-sm"
+                            onclick="window.location.href='/patroni/switchover?op=switchover&leader={{ leader }}&candidate={{ r.name }}&host_ip={{ r.host }}'"
+                            role="button"
+                            {% if r.role == "leader" %}disabled{% endif %}>Switchover
+                    </button>
+                    <a class="btn btn-warning btn-sm"
+                       href="/patroni/restart?op=restart&leader={{ leader }}&candidate={{ r.name }}&host_ip={{ r.host }}"
+                       role="button">Restart</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

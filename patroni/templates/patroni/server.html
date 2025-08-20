@@ -1,0 +1,80 @@
+{% extends 'patroni/layout.html' %}
+
+{% block title %}
+    {{ endpoint }}
+{% endblock %}
+
+{% block content %}
+    <div class="container no-padding-margin">
+        <h2 class="mb-4">Servers</h2>
+        <form action="/patroni/add_server" method="post" class="row g-3">
+            {% csrf_token %}
+            {#            {{ form }}#}
+            <div class="col-md-4">
+                <label for="id_host_ip" class="form-label">Host IP</label>
+                <input type="text" class="form-control" name="host_ip" id="id_host_ip" required value="{{ server.host_ip }}">
+            </div>
+            <div class="col-md-4">
+                <label for="id_username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="username" id="id_username" required value="{{ server.username }}">
+            </div>
+            <div class="col-md-4">
+                <label for="id_password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" id="id_password" required value="{{ server.password }}">
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </form>
+    </div>
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Host IP</th>
+            <th scope="col">Username</th>
+            <th scope="col">Timestamp</th>
+            <th scope="col">Operation</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>192.168.8.51</td>
+            <td>vagrant</td>
+            <td>xx</td>
+            <td><a class="btn btn-warning btn-sm" href="/patroni/edit_server" role="button">Edit</a>
+                <a class="btn btn-danger btn-sm" href="/patroni/delete_server" role="button">Delete</a>
+            </td>
+        </tr>
+        <tr>
+            <td>192.168.8.52</td>
+            <td>vagrant</td>
+            <td>xx</td>
+            <td><a class="btn btn-warning btn-sm" href="#" role="button">Edit</a>
+                <a class="btn btn-danger btn-sm" href="#" role="button">Delete</a>
+            </td>
+        </tr>
+        <tr>
+            <td>192.168.8.53</td>
+            <td>vagrant</td>
+            <td>xx</td>
+            <td><a class="btn btn-warning btn-sm" href="#" role="button">Edit</a>
+                <a class="btn btn-danger btn-sm" href="#" role="button">Delete</a>
+            </td>
+        </tr>
+        {% for s in servers %}
+            <tr>
+                <td>{{ s.host_ip }}</td>
+                <td>{{ s.username }}</td>
+                <td>{{ s.timestamp }}</td>
+                <td><a class="btn btn-warning btn-sm"
+                       href="/patroni/server?op=edit&host_ip={{ s.host_ip }}&username={{ s.username }}"
+                       role="button">Edit</a>
+                    <a class="btn btn-danger btn-sm"
+                       href="/patroni/delete_server?host_ip={{ s.host_ip }}&username={{ s.username }}" role="button">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
